@@ -10,51 +10,49 @@ const { emailTemplates } = require("../helpers/temPlates");
 
 const registration = async (req, res) => {
   // try {
-    const { fullName, email, password, avatar, phone, role, address } = req.body;
+  const { fullName, email, password, avatar, phone, role, address } = req.body;
 
-    // Basic validation
+  // Basic validation
 
-    if (!fullName)
-      return res.status(400).send({ error: "fullName is required" });
-    if (!phone)
-      return res.status(400).send({ error: "phone number is required" });
-    if (!email) return res.status(400).send({ error: "email is required" });
-    if (!password)
-      return res.status(400).send({ error: "password is required" });
+  if (!fullName) return res.status(400).send({ error: "fullName is required" });
+  if (!phone)
+    return res.status(400).send({ error: "phone number is required" });
+  if (!email) return res.status(400).send({ error: "email is required" });
+  if (!password) return res.status(400).send({ error: "password is required" });
 
-    if (!validateEmail(email))
-      return res.status(400).send({ error: "Email is invalid" });
+  if (!validateEmail(email))
+    return res.status(400).send({ error: "Email is invalid" });
 
-    // const passwordError = validatePassword(password);
-    // if (passwordError) return res.status(400).send({ error: passwordError });
+  // const passwordError = validatePassword(password);
+  // if (passwordError) return res.status(400).send({ error: passwordError });
 
-    const existingUser = await userSchema.findOne({ email });
-    if (existingUser)
-      return res.status(400).send({ error: "Email is already in use" });
+  const existingUser = await userSchema.findOne({ email });
+  if (existingUser)
+    return res.status(400).send({ error: "Email is already in use" });
 
-    // Generate OTP
-    const otp = Math.floor(1000 + Math.random() * 9000);
-    const otpExpiredAt = new Date(Date.now() + 5 * 60 * 1000);
+  // Generate OTP
+  const otp = Math.floor(1000 + Math.random() * 9000);
+  const otpExpiredAt = new Date(Date.now() + 5 * 60 * 1000);
 
-    // Save user to DB
-    const userData = new userSchema({
-      fullName,
-      email,
-      password,
-      avatar,
-      phone,
-      address,
-      role,
-      otp,
-      otpExpiredAt,
-    });
-    await userData.save();
+  // Save user to DB
+  const userData = new userSchema({
+    fullName,
+    email,
+    password,
+    avatar,
+    phone,
+    address,
+    role,
+    otp,
+    otpExpiredAt,
+  });
+  await userData.save();
 
-    sendingEmail(email, "variefy your email",  emailTemplates, otp, fullName);
+  sendingEmail(email, "variefy your email", emailTemplates, otp, fullName);
 
-    return res
-      .status(200)
-      .send({ success: "Registration successful. OTP sent to your email." });
+  return res
+    .status(200)
+    .send({ success: "Registration successful. OTP sent to your email." });
   // } catch (error) {
   //   res.status(500).send("Server error!");
   // }
@@ -104,9 +102,9 @@ const login = async (req, res) => {
   const loggedUser = {
     fullName: existingUser.fullName,
     email: existingUser.email,
-    phone : existingUser.phone,
-    role : existingUser.role,
-    address : existingUser.address,
+    phone: existingUser.phone,
+    role: existingUser.role,
+    address: existingUser.address,
     _id: existingUser._id,
     avatar: existingUser.avatar,
     isVarified: existingUser.isVarified,
