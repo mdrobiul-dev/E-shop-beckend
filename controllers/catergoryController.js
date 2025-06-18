@@ -24,4 +24,3 @@ const createCatergory = async (req, res) => {
 };
 
 module.exports = createCatergory;
-         
