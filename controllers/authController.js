@@ -93,6 +93,7 @@ const login = async (req, res) => {
       data: {
         email: existingUser.email,
         _id: existingUser._id,
+        role: existingUser.role
       },
     },
     process.env.SECRET_KEY,
