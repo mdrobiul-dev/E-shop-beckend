@@ -23,4 +23,4 @@ const createCatergory = async (req, res) => {
   res.status(200).send({ message: "category is created", category });
 };
 
-module.exports = createCatergory;   
+module.exports = createCatergory;
