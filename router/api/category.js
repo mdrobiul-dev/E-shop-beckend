@@ -1,5 +1,5 @@
 const express = require("express");
-const createCatergory = require("../../controllers/catergoryController");
+const {createCatergory} = require("../../controllers/catergoryController");
 const validUser = require("../../authMiddlewear/validUser");
 const roleCheck = require("../../authMiddlewear/rolemiddlewear");
 const upload = require('../../authMiddlewear/multer')

@@ -3,7 +3,7 @@ const fs = require("fs");
 const cloudinary = require("../dbConfig/cloudinary");
 
 const createCatergory = async (req, res) => {
-  const { name, image } = req.body;
+  const { name } = req.body;
 
   if (!name) return res.status(400).send({ error: "name is required" });
 
@@ -23,4 +23,4 @@ const createCatergory = async (req, res) => {
   res.status(200).send({ message: "category is created", category });
 };
 
-module.exports = createCatergory;
+module.exports = {createCatergory};
