@@ -24,8 +24,8 @@ const createCatergory = async (req, res) => {
 };
 
 const getCategory = async (req, res) => {
-     const categories = await categorySchema.find()
-     res.status(200).send({success : "list of all catagories", categories})
-}
+  const categories = await categorySchema.find();
+  res.status(200).send({ success: "list of all catagories", categories });
+};
 
-module.exports = {createCatergory, getCategory};
+module.exports = { createCatergory, getCategory };
