@@ -20,7 +20,12 @@ const createCatergory = async (req, res) => {
     image: result.url,
   });
   await category.save();
-  res.status(200).send({ message: "category is created", category });
+  res.status(200).send({ success: "category is created", category });
 };
 
-module.exports = {createCatergory};
+const getCategory = async (req, res) => {
+     const categories = await categorySchema.find()
+     res.status(200).send({success : "list of all catagories", categories})
+}
+
+module.exports = {createCatergory, getCategory};
