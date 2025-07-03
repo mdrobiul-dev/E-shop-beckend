@@ -34,4 +34,4 @@ const createProduct = async (req, res) => {
   res.status(200).send({message : "product created", product});
 };
 
-module.exports = createProduct;  
+module.exports = createProduct;
