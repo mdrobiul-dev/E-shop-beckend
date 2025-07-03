@@ -30,28 +30,36 @@ const productSchema = new Schema({
     },
     mainImg : {
         type : String,
-        required : true
+        // required : true
     },
     images : [
         {
             type : String
         }
     ],
-    variants: [
-  {
-    name: {
-      type: String,
-      enum: ["color", "size"],
-      required: true,
-    },
-    options: [
-      {
-        value: { type: String, required: true },
-        additionalPrice: { type: Number, default: 0 },
-      }
+    
+    variants : [
+       {
+        name : {
+          type : String,
+          enum : ["color", "size"],
+          required : true,
+          lowercase : true
+        },
+        options : [
+           {
+            value : {
+              type : String,
+              required : true
+            },
+            additionalPrice : {
+              type : Number,
+              default : 0
+            }
+           }
+        ]
+       }
     ]
-  }
-]
 
 },
   {

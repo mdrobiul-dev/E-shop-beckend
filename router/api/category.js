@@ -6,6 +6,6 @@ const upload = require('../../authMiddlewear/multer')
 const categoryRoute = express.Router();
 
 categoryRoute.post("/createcategory", validUser, roleCheck(["admin"]),upload.single('image'), createCatergory )
-categoryRoute.get("/category", getCategory)
+categoryRoute.get("/getcategory", getCategory)
 
 module.exports = categoryRoute;
