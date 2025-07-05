@@ -80,9 +80,9 @@ const createProduct = async (req, res) => {
     stock: validStock,
     variants,
   });
-  
+
   await product.save();
   res.status(200).send({ message: "Product created", product });
 };
 
-module.exports = createProduct;
+module.exports = createProduct;     
