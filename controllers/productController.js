@@ -6,6 +6,9 @@ const createProduct = async (req, res) => {
   const numberPrice = Number(price);
   const validStock = Number(stock);
 
+if(req.files){
+  console.log(req.files)
+}
   if (!title?.trim()) {
     return res.status(400).send({ error: "Title is required" });
   }
@@ -81,7 +84,7 @@ const createProduct = async (req, res) => {
     variants,
   });
 
-  await product.save();
+  // await product.save();
   res.status(200).send({ message: "Product created", product });
 };
 
