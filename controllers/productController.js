@@ -84,7 +84,7 @@ if(req.files){
     variants,
   });
 
-  // await product.save();
+  await product.save();
   res.status(200).send({ message: "Product created", product });
 };
 
