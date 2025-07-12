@@ -35,6 +35,9 @@ const productSchema = new Schema({
     mainImgPublicId : {
       type : String
     },
+    slug : {
+      type : String
+    },
     images : [
         {
             type : String
@@ -46,7 +49,7 @@ const productSchema = new Schema({
         name : {
           type : String,
           enum : ["color", "size"],
-          required : true,
+          // required : true,
           lowercase : true
         },
         options : [
