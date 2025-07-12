@@ -29,14 +29,14 @@ const createProduct = async (req, res) => {
     return res.status(400).send({ error: "Valid category ID is required" });
   }
 
-    if(!req.files || !req.files.mainImg || req.files.mainImg.length === 0) {
-     return res.status(400).send({error : "Main image is required"})
+  if (!req.files || !req.files.mainImg || req.files.mainImg.length === 0) {
+    return res.status(400).send({ error: "Main image is required" });
   }
 
-const slug = generateSlug(title)
+  const slug = generateSlug(title);
 
-  const allowedTypes = ["image/jpeg", "image/png", "image/webp"]
-  const mainImgFile = req.files.mainImg[0]
+  const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
+  const mainImgFile = req.files.mainImg[0];
   const additionalImages = req.files.images || [];
 
   if (isNaN(validStock)) {
@@ -83,36 +83,40 @@ const slug = generateSlug(title)
   //   }
   // }
 
-  if(!allowedTypes.includes(mainImgFile.mimetype)) {
-    return res.status(400).send({error : "Main image must be a valid image file"})
+  if (!allowedTypes.includes(mainImgFile.mimetype)) {
+    return res
+      .status(400)
+      .send({ error: "Main image must be a valid image file" });
   }
 
   for (const img of additionalImages) {
     if (!allowedTypes.includes(img.mimetype)) {
-      return res.status(400).send({ error: "All additional images must be valid image files" });
+      return res
+        .status(400)
+        .send({ error: "All additional images must be valid image files" });
     }
   }
 
-  let  images = []
- if(additionalImages.length > 0) {
-   for(const img of additionalImages) {
-       result = await cloudinary.uploader.upload(img.path, {
-        folder : "product"
-      })
-      await fs.promises.unlink(img.path)
-      images.push(result.url)
-   }
- }
+  let images = [];
+  if (additionalImages.length > 0) {
+    for (const img of additionalImages) {
+      result = await cloudinary.uploader.upload(img.path, {
+        folder: "product",
+      });
+      await fs.promises.unlink(img.path);
+      images.push(result.url);
+    }
+  }
 
- let mainImg;
- let publicId;
-  if(mainImgFile) {
+  let mainImg;
+  let publicId;
+  if (mainImgFile) {
     const result = await cloudinary.uploader.upload(mainImgFile.path, {
-      folder : "product"
-    })
+      folder: "product",
+    });
     await fs.promises.unlink(mainImgFile.path);
-    publicId = result.public_id
-    mainImg = result.url
+    publicId = result.public_id;
+    mainImg = result.url;
   }
 
   const product = new productSchema({
@@ -123,13 +127,13 @@ const slug = generateSlug(title)
     slug,
     stock: validStock,
     // variants,
-    mainImg : mainImg,
-    mainImgPublicId : publicId,
-    images : images,
+    mainImg: mainImg,
+    mainImgPublicId: publicId,
+    images: images,
   });
 
   await product.save();
   res.status(200).send({ message: "Product created", product });
 };
 
-module.exports = createProduct;  
+module.exports = createProduct;
