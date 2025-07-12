@@ -30,7 +30,10 @@ const productSchema = new Schema({
     },
     mainImg : {
         type : String,
-        // required : true
+        required : true
+    },
+    mainImgPublicId : {
+      type : String
     },
     images : [
         {
