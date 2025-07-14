@@ -247,7 +247,7 @@ const updateProduct = async (req, res) => {
 };
 
 const getProduct = async (req, res) => {
-      try {
+  try {
     const { search = "", page = 1, limit = 10 } = req.query;
 
     const pageNumber = parseInt(page) || 1;
@@ -283,6 +283,6 @@ const getProduct = async (req, res) => {
     console.error("Failed to fetch products:", error);
     res.status(500).json({ message: "Server error. Try again later." });
   }
-}
+};
 
 module.exports = { createProduct, updateProduct, getProduct };
