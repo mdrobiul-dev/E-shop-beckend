@@ -247,4 +247,4 @@ const updateProduct = async (req, res) => {
   }
 };
 
-module.exports = { createProduct, updateProduct };
+module.exports = { createProduct, updateProduct };   
