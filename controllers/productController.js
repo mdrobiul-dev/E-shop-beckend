@@ -165,7 +165,6 @@ const updateProduct = async (req, res) => {
     if (category) existingProduct.category = category;
     if (stock) existingProduct.stock = Number(stock);
 
-    // Optional: Validate and update variants if provided
     if (variants && Array.isArray(variants) && variants.length > 0) {
       for (const item of variants) {
         if (
@@ -247,4 +246,43 @@ const updateProduct = async (req, res) => {
   }
 };
 
-module.exports = { createProduct, updateProduct };   
+const getProduct = async (req, res) => {
+      try {
+    const { search = "", page = 1, limit = 10 } = req.query;
+
+    const pageNumber = parseInt(page) || 1;
+    const limitNumber = parseInt(limit) || 10;
+    const skip = (pageNumber - 1) * limitNumber;
+
+    const titleRegex = new RegExp(search, "i");
+
+    const totalProducts = await productSchema.countDocuments({
+      title: { $regex: titleRegex },
+    });
+
+    const products = await productSchema
+      .find({ title: { $regex: titleRegex } })
+      .skip(skip)
+      .limit(limitNumber)
+      .sort({ createdAt: -1 });
+
+    const totalPages = Math.ceil(totalProducts / limitNumber);
+    const hasPrevPage = pageNumber > 1;
+    const hasNextPage = pageNumber < totalPages;
+
+    res.status(200).json({
+      products,
+      totalProducts,
+      limit: limitNumber,
+      page: pageNumber,
+      totalPages,
+      hasPrevPage,
+      hasNextPage,
+    });
+  } catch (error) {
+    console.error("Failed to fetch products:", error);
+    res.status(500).json({ message: "Server error. Try again later." });
+  }
+}
+
+module.exports = { createProduct, updateProduct, getProduct };
