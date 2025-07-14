@@ -49,7 +49,7 @@ const productSchema = new Schema({
         name : {
           type : String,
           enum : ["color", "size"],
-          // required : true,
+          required : true,
           lowercase : true
         },
         options : [

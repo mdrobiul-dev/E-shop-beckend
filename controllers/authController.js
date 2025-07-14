@@ -9,7 +9,7 @@ const { emailTemplates } = require("../helpers/temPlates");
 //registration function
 
 const registration = async (req, res) => {
-  // try {
+  try {
   const { fullName, email, password, avatar, phone, role, address } = req.body;
 
   // Basic validation
@@ -23,8 +23,8 @@ const registration = async (req, res) => {
   if (!validateEmail(email))
     return res.status(400).send({ error: "Email is invalid" });
 
-  // const passwordError = validatePassword(password);
-  // if (passwordError) return res.status(400).send({ error: passwordError });
+  const passwordError = validatePassword(password);
+  if (passwordError) return res.status(400).send({ error: passwordError });
 
   const existingUser = await userSchema.findOne({ email });
   if (existingUser)
@@ -53,9 +53,9 @@ const registration = async (req, res) => {
   return res
     .status(200)
     .send({ success: "Registration successful. OTP sent to your email." });
-  // } catch (error) {
-  //   res.status(500).send("Server error!");
-  // }
+  } catch (error) {
+    res.status(500).send("Server error!");
+  }
 };
 
 //login function
