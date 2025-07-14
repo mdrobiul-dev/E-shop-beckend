@@ -161,14 +161,17 @@ const updateProduct = async (req, res) => {
 
     if (title) existingProduct.title = title;
     if (description) existingProduct.description = description;
-    if (price) existingProduct.price = Number(price); 
+    if (price) existingProduct.price = Number(price);
     if (category) existingProduct.category = category;
-    if (stock) existingProduct.stock = Number(stock); 
+    if (stock) existingProduct.stock = Number(stock);
 
     // Optional: Validate and update variants if provided
     if (variants && Array.isArray(variants) && variants.length > 0) {
       for (const item of variants) {
-        if (!item.name || !["color", "size"].includes(item.name.toLowerCase())) {
+        if (
+          !item.name ||
+          !["color", "size"].includes(item.name.toLowerCase())
+        ) {
           return res.status(400).send({
             error: "Variant name must be either 'color' or 'size'",
           });
@@ -181,7 +184,11 @@ const updateProduct = async (req, res) => {
         }
 
         for (const option of item.options) {
-          if (!option.value || typeof option.value !== "string" || !option.value.trim()) {
+          if (
+            !option.value ||
+            typeof option.value !== "string" ||
+            !option.value.trim()
+          ) {
             return res
               .status(400)
               .send({ error: "Each option must have a valid 'value'" });
@@ -189,7 +196,8 @@ const updateProduct = async (req, res) => {
 
           if (
             option.additionalPrice !== undefined &&
-            (typeof option.additionalPrice !== "number" || option.additionalPrice < 0)
+            (typeof option.additionalPrice !== "number" ||
+              option.additionalPrice < 0)
           ) {
             return res.status(400).send({
               error: "Option additionalPrice must be a non-negative number",
@@ -201,7 +209,6 @@ const updateProduct = async (req, res) => {
       existingProduct.variants = variants;
     }
 
-    // Handle main image update
     if (req?.files?.mainImg && req.files.mainImg.length > 0) {
       const mainImgFile = req.files.mainImg[0];
 
@@ -210,7 +217,10 @@ const updateProduct = async (req, res) => {
         try {
           await cloudinary.uploader.destroy(existingProduct.mainImgPublicId);
         } catch (err) {
-          console.warn("Failed to delete old image from Cloudinary:", err.message);
+          console.warn(
+            "Failed to delete old image from Cloudinary:",
+            err.message
+          );
         }
       }
 
@@ -236,6 +246,5 @@ const updateProduct = async (req, res) => {
     res.status(500).send({ message: "Server error, try again later." });
   }
 };
-
 
 module.exports = { createProduct, updateProduct };
