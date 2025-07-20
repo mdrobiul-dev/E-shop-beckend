@@ -285,4 +285,4 @@ const getProduct = async (req, res) => {
   }
 };
 
-module.exports = { createProduct, updateProduct, getProduct };                  
+module.exports = { createProduct, updateProduct, getProduct };                   
