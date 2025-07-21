@@ -306,4 +306,4 @@ const deleteProduct = async (req, res) => {
   }
 };
 
-module.exports = { createProduct, updateProduct, getProduct, deleteProduct };    
+module.exports = { createProduct, updateProduct, getProduct, deleteProduct };
