@@ -144,7 +144,7 @@ const createProduct = async (req, res) => {
     res.status(200).send({ message: "Product created", product });
   } catch (error) {
     console.error(error);
-    res.status(500).send({ message: "Server error, try again later." });
+    res.status(500).send({ error: "Server error, try again later." });
   }
 };
 
@@ -159,8 +159,8 @@ const updateProduct = async (req, res) => {
       return res.status(404).send({ error: "Product not found" });
     }
 
-    if (title) existingProduct.title = title;
-    if (description) existingProduct.description = description;
+    if (title) existingProduct.title = title.trim();
+    if (description) existingProduct.description = description.trim();
     if (price) existingProduct.price = Number(price);
     if (category) existingProduct.category = category;
     if (stock) existingProduct.stock = Number(stock);
@@ -211,7 +211,6 @@ const updateProduct = async (req, res) => {
     if (req?.files?.mainImg && req.files.mainImg.length > 0) {
       const mainImgFile = req.files.mainImg[0];
 
-      // Delete previous photo from cloudinary
       if (existingProduct.mainImgPublicId) {
         try {
           await cloudinary.uploader.destroy(existingProduct.mainImgPublicId);
@@ -242,7 +241,7 @@ const updateProduct = async (req, res) => {
     res.status(200).send({ message: "Product updated", existingProduct });
   } catch (error) {
     console.error(error);
-    res.status(500).send({ message: "Server error, try again later." });
+    res.status(500).send({ error: "Server error, try again later." });
   }
 };
 
@@ -281,8 +280,31 @@ const getProduct = async (req, res) => {
     });
   } catch (error) {
     console.error("Failed to fetch products:", error);
-    res.status(500).json({ message: "Server error. Try again later." });
+    res.status(500).json({ error: "Server error. Try again later." });
   }
 };
 
-module.exports = { createProduct, updateProduct, getProduct };
+const deleteProduct = async (req, res) => {
+  const { productID } = req.params;
+
+  try {
+    const product = await productSchema.findById(productID);
+    
+    if (!product) {
+      return res.status(404).send({ error: "No product found!" });
+    }
+    if (product.mainImgPublicId) {
+      await cloudinary.uploader.destroy(product.mainImgPublicId);
+    }
+
+    await productSchema.findByIdAndDelete(productID);
+
+    res.status(200).send({ message: "Product has been deleted" });
+  } catch (error) {
+    console.error("Failed to delete product:", error);
+    res.status(500).send({ error: "Server error" });
+  }
+};
+
+
+module.exports = { createProduct, updateProduct, getProduct, deleteProduct };
