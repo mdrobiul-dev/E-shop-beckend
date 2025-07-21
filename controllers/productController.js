@@ -289,7 +289,7 @@ const deleteProduct = async (req, res) => {
 
   try {
     const product = await productSchema.findById(productID);
-    
+
     if (!product) {
       return res.status(404).send({ error: "No product found!" });
     }
@@ -305,6 +305,5 @@ const deleteProduct = async (req, res) => {
     res.status(500).send({ error: "Server error" });
   }
 };
-
 
 module.exports = { createProduct, updateProduct, getProduct, deleteProduct };
