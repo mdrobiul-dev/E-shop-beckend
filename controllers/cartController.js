@@ -4,4 +4,4 @@ const addTocart = async (req, res) => {
      res.status(200).send("hello world")
 }
 
-module.exports = {addTocart}   
+module.exports = {addTocart}
