@@ -121,7 +121,7 @@ const getCart = async (req, res) => {
 
     const cart = await cartSchema
       .findOne({ user: userId })
-      .populate("items.product"); 
+      .populate("items.product");
 
     if (!cart || cart.items.length === 0) {
       return res.status(404).send({ message: "Your cart is empty" });
