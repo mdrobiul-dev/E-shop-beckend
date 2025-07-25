@@ -134,4 +134,4 @@ const getCart = async (req, res) => {
   }
 };
 
-module.exports = { addTocart, updateCart, deleteCartItem, getCart };    
+module.exports = { addTocart, updateCart, deleteCartItem, getCart };         
