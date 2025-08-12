@@ -12,6 +12,6 @@ authRout.post("/resentotp", resentOtp)
 authRout.post("/login", login)
 authRout.post("/forgetpassword", forgotPassword)
 authRout.post("/resetpassword/:randomString", resetPassword)
-authRout.post("/profileupdate",validUser, upload.single('avatar'), profileUpdate)                
+authRout.post("/profileupdate",validUser, upload.single('avatar'), profileUpdate)                     
 
 module.exports = authRout         
