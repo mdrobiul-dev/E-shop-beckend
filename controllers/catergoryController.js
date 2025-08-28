@@ -3,6 +3,7 @@ const fs = require("fs");
 const cloudinary = require("../dbConfig/cloudinary");
 
 const createCatergory = async (req, res) => {
+
   const { name } = req.body;
 
 try {
@@ -41,4 +42,4 @@ const getCategory = async (req, res) => {
   res.status(200).send({ success: "list of all catagories", categories });
 };
 
-module.exports = { createCatergory, getCategory };
+module.exports = { createCatergory, getCategory };      
