@@ -5,7 +5,16 @@ const cloudinary = require("../dbConfig/cloudinary");
 const generateSlug = require("../helpers/slugGenarator");
 
 const createProduct = async (req, res) => {
-  const { title, description, price, category, stock, variants } = req.body;
+  let { title, description, price, category, stock, variants } = req.body;
+  console.log("title =>", title, "description =>", description, "price =>", price, "category =>", category, "stock =>", stock, "variants =>", variants);
+  
+  // Parse the variants string to JavaScript object
+  try {
+    variants = JSON.parse(variants);
+  } catch (error) {
+    return res.status(400).send({ error: "Invalid variants format" });
+  }
+  
   const numberPrice = Number(price);
   const validStock = Number(stock);
 
@@ -45,9 +54,7 @@ const createProduct = async (req, res) => {
     }
 
     if (!Number.isInteger(validStock) || validStock < 1) {
-      return res
-        .status(400)
-        .send({ error: "Stock must be a positive integer" });
+      return res.status(400).send({ error: "Stock must be a positive integer" });
     }
 
     if (!Array.isArray(variants) || variants.length < 1) {
@@ -69,16 +76,10 @@ const createProduct = async (req, res) => {
 
       for (const option of item.options) {
         if (!option.value || typeof option.value !== "string") {
-          return res
-            .status(400)
-            .send({ error: "Each option must have a valid 'value'" });
+          return res.status(400).send({ error: "Each option must have a valid 'value'" });
         }
 
-        if (
-          option.additionalPrice !== undefined &&
-          (typeof option.additionalPrice !== "number" ||
-            option.additionalPrice < 0)
-        ) {
+        if (option.additionalPrice !== undefined && (typeof option.additionalPrice !== "number" || option.additionalPrice < 0)) {
           return res.status(400).send({
             error: "Option additionalPrice must be a non-negative number",
           });
@@ -87,23 +88,19 @@ const createProduct = async (req, res) => {
     }
 
     if (!allowedTypes.includes(mainImgFile.mimetype)) {
-      return res
-        .status(400)
-        .send({ error: "Main image must be a valid image file" });
+      return res.status(400).send({ error: "Main image must be a valid image file" });
     }
 
     for (const img of additionalImages) {
       if (!allowedTypes.includes(img.mimetype)) {
-        return res
-          .status(400)
-          .send({ error: "All additional images must be valid image files" });
+        return res.status(400).send({ error: "All additional images must be valid image files" });
       }
     }
 
     let images = [];
     if (additionalImages.length > 0) {
       for (const img of additionalImages) {
-        result = await cloudinary.uploader.upload(img.path, {
+        const result = await cloudinary.uploader.upload(img.path, {
           folder: "product",
         });
         await fs.promises.unlink(img.path);
