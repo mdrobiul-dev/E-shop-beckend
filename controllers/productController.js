@@ -6,7 +6,7 @@ const generateSlug = require("../helpers/slugGenarator");
 
 const createProduct = async (req, res) => {
   let { title, description, price, category, stock, variants } = req.body;
-  console.log("title =>", title, "description =>", description, "price =>", price, "category =>", category, "stock =>", stock, "variants =>", variants);
+  // console.log("title =>", title, "description =>", description, "price =>", price, "category =>", category, "stock =>", stock, "variants =>", variants);
   
   // Parse the variants string to JavaScript object
   try {

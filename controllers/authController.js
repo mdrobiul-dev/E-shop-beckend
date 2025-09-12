@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 const fs = require("fs");
 const bcrypt = require("bcrypt");
 const validateEmail = require("../helpers/emailValidator");
+const validatePassword = require("../helpers/validpassword")
 const userSchema = require("../models/userSchema");
 const sendingEmail = require("../helpers/emailSend");
 const { emailTemplates } = require("../helpers/temPlates");
@@ -9,8 +10,11 @@ const { emailTemplates } = require("../helpers/temPlates");
 //registration function
 
 const registration = async (req, res) => {
-  try {
-  const { fullName, email, password, avatar, phone, role, address } = req.body;
+  
+  // try {
+    const { fullName, email, password, avatar, phone, role, address } = req.body;
+    // console.log(fullName, email, password, avatar, phone, role, address);
+    //  return
 
   // Basic validation
 
@@ -53,9 +57,9 @@ const registration = async (req, res) => {
   return res
     .status(200)
     .send({ success: "Registration successful. OTP sent to your email." });
-  } catch (error) {
-    res.status(500).send("Server error!");
-  }
+  // } catch (error) {
+  //   res.status(500).send("Server error!");
+  // }
 };
 
 //login function
