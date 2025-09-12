@@ -8,4 +8,4 @@ cartRouter.put("/update",validate, updateCart)
 cartRouter.delete("/delete",validate, deleteCartItem)
 cartRouter.get("/cartlist",validate, getCart )
 
-module.exports = cartRouter;                       
+module.exports = cartRouter;                           
