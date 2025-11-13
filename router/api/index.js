@@ -8,9 +8,8 @@ const apiRouter = express.Router();
 
 apiRouter.use("/auth", authRout);
 apiRouter.use("/category", categoryRoute);
-apiRouter.use("/product", productRoute );
-apiRouter.use("/cart", cartRouter)
+apiRouter.use("/product", productRoute);
+apiRouter.use("/cart", cartRouter);
 apiRouter.use("/order", orderRouter);
 
-module.exports = apiRouter;                                                            
- 
+module.exports = apiRouter;
